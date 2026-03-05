@@ -197,7 +197,8 @@ body:JSON.stringify({question:q})
 
 let data=await res.json()
 
-document.getElementById("response").innerText=data.answer
+document.getElementById("response").innerText = data.answer
+document.getElementById("question").value = ""
 
 }
 
