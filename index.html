@@ -42,7 +42,7 @@ padding:40px;
 }
 
 section{
-margin-bottom:50px;
+margin-bottom:60px;
 }
 
 h2{
@@ -54,6 +54,24 @@ background:white;
 border-radius:10px;
 padding:20px;
 box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+#chatlog{
+height:250px;
+overflow-y:auto;
+border:1px solid #ddd;
+padding:10px;
+margin-bottom:15px;
+background:#fafafa;
+}
+
+.message-user{
+margin-bottom:10px;
+font-weight:bold;
+}
+
+.message-ai{
+margin-bottom:20px;
 }
 
 input{
@@ -75,17 +93,16 @@ button:hover{
 background:#082d6b;
 }
 
-#response{
-margin-top:20px;
-font-size:16px;
-}
-
 footer{
 background:#eee;
 padding:20px;
 text-align:center;
 font-size:13px;
 color:#555;
+}
+
+ul{
+line-height:1.8;
 }
 
 </style>
@@ -101,7 +118,8 @@ Dr. Nana O. Sarpong
 <a href="#about">About</a>
 <a href="#procedures">Procedures</a>
 <a href="#research">Research</a>
-<a href="#ai">Ask the Research AI</a>
+<a href="#publications">Publications</a>
+<a href="#ai">Research AI</a>
 </nav>
 
 <div class="container">
@@ -123,6 +141,7 @@ implant technology, and patient-reported outcomes following joint replacement.
 
 </section>
 
+
 <section id="procedures">
 
 <h2>Procedures</h2>
@@ -138,6 +157,7 @@ implant technology, and patient-reported outcomes following joint replacement.
 
 </section>
 
+
 <section id="research">
 
 <h2>Research</h2>
@@ -151,24 +171,31 @@ national orthopedic conferences.
 
 </section>
 
+
+<section id="publications">
+
+<h2>Recent Publications</h2>
+
+<ul id="pub-list">
+<li>Loading publications...</li>
+</ul>
+
+</section>
+
+
 <section id="ai">
 
 <h2>Ask the Research AI</h2>
 
 <div class="chatbox">
 
-<p>
-Ask questions about hip replacement, knee replacement,
-or Dr. Sarpong’s research.
-</p>
+<div id="chatlog"></div>
 
 <input id="question"
-placeholder="Example: What are advantages of anterior hip replacement?"
+placeholder="Ask about hip replacement research..."
 onkeypress="if(event.key==='Enter'){ask()}">
 
 <button onclick="ask()">Ask</button>
-
-<p id="response"></p>
 
 </div>
 
@@ -176,27 +203,30 @@ onkeypress="if(event.key==='Enter'){ask()}">
 
 </div>
 
+
 <footer>
 
-This AI tool provides educational information derived from published
-research and is not intended to provide medical advice or replace
-consultation with a qualified healthcare professional.
+This AI tool provides educational information derived from biomedical
+literature and should not be interpreted as medical advice.
 
 </footer>
+
 
 <script>
 
 async function ask(){
 
 let q = document.getElementById("question").value
+if(q.trim()===""){return}
 
-if(q.trim() === ""){
-return
-}
+let chat = document.getElementById("chatlog")
 
-document.getElementById("response").innerHTML = "⏳ Thinking..."
+chat.innerHTML += "<div class='message-user'>You: "+q+"</div>"
+chat.innerHTML += "<div>⏳ Thinking...</div>"
 
-try {
+document.getElementById("question").value=""
+
+try{
 
 let res = await fetch("https://sarpong-ai.onrender.com",{
 method:"POST",
@@ -206,19 +236,49 @@ body:JSON.stringify({question:q})
 
 let data = await res.json()
 
-document.getElementById("response").innerText = data.answer
+chat.innerHTML += "<div class='message-ai'><b>AI:</b> "+data.answer+"</div>"
 
-document.getElementById("question").value = ""
+chat.scrollTop = chat.scrollHeight
 
 }
 
 catch(error){
 
-document.getElementById("response").innerText = "Error contacting research AI."
+chat.innerHTML += "<div>Error contacting AI service.</div>"
 
 }
 
 }
+
+
+
+async function loadPublications(){
+
+let res = await fetch(
+"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=Sarpong+NO[Author]&retmode=json&retmax=5"
+)
+
+let data = await res.json()
+
+let ids = data.esearchresult.idlist
+
+let list = document.getElementById("pub-list")
+
+list.innerHTML=""
+
+for(let id of ids){
+
+let item=document.createElement("li")
+
+item.innerHTML = `<a href="https://pubmed.ncbi.nlm.nih.gov/${id}/" target="_blank">PubMed ID ${id}</a>`
+
+list.appendChild(item)
+
+}
+
+}
+
+loadPublications()
 
 </script>
 
