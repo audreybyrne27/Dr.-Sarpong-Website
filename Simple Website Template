@@ -1,55 +1,207 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>Dr. Sarpong | Orthopedic Surgeon</title>
+<title>Dr. Nana O. Sarpong | Orthopedic Surgeon</title>
+
 <style>
-body {font-family: Arial; margin:40px;}
-header {font-size:32px; font-weight:bold;}
-section {margin-top:30px;}
-.chatbox {border:1px solid #ccc;padding:15px;}
+
+body{
+font-family: Arial, Helvetica, sans-serif;
+margin:0;
+background:#f5f5f5;
+}
+
+header{
+background:#0b3d91;
+color:white;
+padding:30px;
+font-size:34px;
+font-weight:bold;
+text-align:center;
+}
+
+nav{
+background:#ffffff;
+padding:15px;
+text-align:center;
+box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+nav a{
+margin:0 15px;
+text-decoration:none;
+font-weight:bold;
+color:#0b3d91;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+padding:40px;
+}
+
+section{
+margin-bottom:50px;
+}
+
+h2{
+color:#0b3d91;
+}
+
+.chatbox{
+background:white;
+border-radius:10px;
+padding:20px;
+box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+input{
+width:70%;
+padding:10px;
+font-size:16px;
+}
+
+button{
+padding:10px 15px;
+font-size:16px;
+background:#0b3d91;
+color:white;
+border:none;
+cursor:pointer;
+}
+
+button:hover{
+background:#082d6b;
+}
+
+#response{
+margin-top:20px;
+font-size:16px;
+}
+
+footer{
+background:#eee;
+padding:20px;
+text-align:center;
+font-size:13px;
+color:#555;
+}
+
 </style>
 </head>
 
 <body>
 
-<header>Dr. Sarpong</header>
+<header>
+Dr. Nana O. Sarpong
+</header>
 
-<section>
+<nav>
+<a href="#about">About</a>
+<a href="#procedures">Procedures</a>
+<a href="#research">Research</a>
+<a href="#ai">Ask the Research AI</a>
+</nav>
+
+<div class="container">
+
+<section id="about">
 <h2>About</h2>
-<p>Orthopedic surgeon specializing in hip and knee arthroplasty.</p>
+
+<p>
+Dr. Nana O. Sarpong is an orthopedic surgeon specializing in hip and knee arthroplasty.
+His clinical and research work focuses on modern joint replacement techniques,
+revision arthroplasty, and optimizing patient outcomes through data-driven care.
+</p>
+
+<p>
+He is actively involved in academic research exploring surgical innovation,
+implant technology, and patient-reported outcomes following joint replacement.
+</p>
+
 </section>
 
-<section>
+<section id="procedures">
+
+<h2>Procedures</h2>
+
+<ul>
+<li>Total Hip Arthroplasty</li>
+<li>Total Knee Arthroplasty</li>
+<li>Revision Hip Replacement</li>
+<li>Revision Knee Replacement</li>
+<li>Direct Anterior Hip Replacement</li>
+<li>Robotic-Assisted Joint Replacement</li>
+</ul>
+
+</section>
+
+<section id="research">
+
 <h2>Research</h2>
-<p>Explore Dr. [Last Name]'s publications and research insights.</p>
+
+<p>
+Dr. Sarpong has published research on hip and knee arthroplasty,
+implant design, surgical approaches, and patient outcomes.
+His work appears in peer-reviewed orthopedic journals and
+national orthopedic conferences.
+</p>
+
 </section>
 
-<section>
+<section id="ai">
+
 <h2>Ask the Research AI</h2>
 
 <div class="chatbox">
-<input id="question" placeholder="Ask about hip replacement research">
+
+<p>
+Ask questions about hip replacement, knee replacement,
+or Dr. Sarpong’s research.
+</p>
+
+<input id="question" placeholder="Example: What are advantages of anterior hip replacement?">
+
 <button onclick="ask()">Ask</button>
+
 <p id="response"></p>
+
 </div>
 
-<script>
-async function ask(){
-let q = document.getElementById("question").value
+</section>
 
-let res = await fetch("YOUR_STREAMLIT_URL",{
+</div>
+
+<footer>
+
+This AI tool provides educational information derived from published
+research and is not intended to provide medical advice or replace
+consultation with a qualified healthcare professional.
+
+</footer>
+
+<script>
+
+async function ask(){
+
+let q=document.getElementById("question").value
+
+document.getElementById("response").innerText="Thinking..."
+
+let res=await fetch("YOUR_STREAMLIT_URL",{
 method:"POST",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify({question:q})
 })
 
-let data = await res.json()
+let data=await res.json()
 
-document.getElementById("response").innerText = data.answer
+document.getElementById("response").innerText=data.answer
+
 }
-</script>
 
-</section>
+</script>
 
 </body>
 </html>
