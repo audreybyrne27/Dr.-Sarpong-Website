@@ -189,7 +189,7 @@ let q=document.getElementById("question").value
 
 document.getElementById("response").innerText="Thinking..."
 
-let res=await fetch("YOUR_STREAMLIT_URL",{
+let res=await fetch("https://sarpong-ai.onrender.com",{
 method:"POST",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify({question:q})
