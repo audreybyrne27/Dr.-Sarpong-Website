@@ -107,6 +107,7 @@ Dr. Nana O. Sarpong
 <div class="container">
 
 <section id="about">
+
 <h2>About</h2>
 
 <p>
@@ -161,7 +162,9 @@ Ask questions about hip replacement, knee replacement,
 or Dr. Sarpong’s research.
 </p>
 
-<input id="question" placeholder="Example: What are advantages of anterior hip replacement?">
+<input id="question"
+placeholder="Example: What are advantages of anterior hip replacement?"
+onkeypress="if(event.key==='Enter'){ask()}">
 
 <button onclick="ask()">Ask</button>
 
@@ -185,20 +188,35 @@ consultation with a qualified healthcare professional.
 
 async function ask(){
 
-let q=document.getElementById("question").value
+let q = document.getElementById("question").value
 
-document.getElementById("response").innerText="Thinking..."
+if(q.trim() === ""){
+return
+}
 
-let res=await fetch("https://sarpong-ai.onrender.com",{
+document.getElementById("response").innerHTML = "⏳ Thinking..."
+
+try {
+
+let res = await fetch("https://sarpong-ai.onrender.com",{
 method:"POST",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify({question:q})
 })
 
-let data=await res.json()
+let data = await res.json()
 
 document.getElementById("response").innerText = data.answer
+
 document.getElementById("question").value = ""
+
+}
+
+catch(error){
+
+document.getElementById("response").innerText = "Error contacting research AI."
+
+}
 
 }
 
