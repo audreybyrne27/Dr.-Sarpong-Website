@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dr. Sarpong | Orthopedic Surgeon</title>
+<style>
+body {font-family: Arial; margin:40px;}
+header {font-size:32px; font-weight:bold;}
+section {margin-top:30px;}
+.chatbox {border:1px solid #ccc;padding:15px;}
+</style>
+</head>
+
+<body>
+
+<header>Dr. Sarpong</header>
+
+<section>
+<h2>About</h2>
+<p>Orthopedic surgeon specializing in hip and knee arthroplasty.</p>
+</section>
+
+<section>
+<h2>Research</h2>
+<p>Explore Dr. [Last Name]'s publications and research insights.</p>
+</section>
+
+<section>
+<h2>Ask the Research AI</h2>
+
+<div class="chatbox">
+<input id="question" placeholder="Ask about hip replacement research">
+<button onclick="ask()">Ask</button>
+<p id="response"></p>
+</div>
+
+<script>
+async function ask(){
+let q = document.getElementById("question").value
+
+let res = await fetch("YOUR_STREAMLIT_URL",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({question:q})
+})
+
+let data = await res.json()
+
+document.getElementById("response").innerText = data.answer
+}
+</script>
+
+</section>
+
+</body>
+</html>
